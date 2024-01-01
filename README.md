@@ -1,7 +1,7 @@
 # ESP32_DHT11_Get_temp_humi  
 ESP32连接DHT11获取温湿度数据，显示在OLED屏幕上，通过中间层将数据上传到mysql数据库并且通过网页显示出来  
 部署方式：  
-##一、ESP32部分
+## 一、ESP32部分
 1、刷入micropython固件  
 2、安装库文件：(使用Thonny进行开发)  
 点击 工具——>管理包，搜索安装如下库  
@@ -10,5 +10,7 @@ ESP32连接DHT11获取温湿度数据，显示在OLED屏幕上，通过中间层
 3、将代码保存为main.py到ESP32，这样ESP32上电以后会自动运行  
 ![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/640d7aed-c7e8-42fa-8a73-800ac2aab547)  
 
-##二、中间层部署（使用中间层去访问数据可以增加安全性）
+## 二、中间层部署（使用中间层去访问数据可以增加安全性）
+1、安装库文件
+
 

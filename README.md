@@ -16,5 +16,8 @@ ESP32连接DHT11获取温湿度数据，显示在OLED屏幕上，通过中间层
 ```
 pip install request  
 pip install flask  
-pip install pymysql  
+pip install pymysql
+pip install flask_cors
+pip install jsonify
+pip install logging  
 ```

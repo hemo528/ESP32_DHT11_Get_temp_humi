@@ -51,5 +51,19 @@ sudo apt-get install apache2
 
 ![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/f2362433-2de1-4080-b717-bc23f768a1ab)  
 
+## 四、数据库生成  
+
+
+```
+create table temp_moisture
+(
+    id       int auto_increment
+        primary key,
+    time     varchar(64) not null,
+    temp     double      not null,
+    moisture double      not null
+);
+```
+
 
 

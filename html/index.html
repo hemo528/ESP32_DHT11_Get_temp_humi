@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>我的家</title>
+  <!-- 引入 Chart.js 库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #259eff;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .score {
+      font-size: 48px;
+      margin: 10px;
+      display: inline-block;
+    }
+
+    #temperatureScore {
+      color: #fff; 
+      font-size: 150px;
+    }
+
+    #moistureScore {
+      color: #fff; 
+      font-size: 150px;
+    }
+
+    .chart-container {
+      width: 800px;
+      height: 400px;
+      margin-bottom: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .text {
+      font-size: 24px;
+      color: #fff;
+    }
+
+    #myHome {
+      font-size: 100px;
+      color: #259eff;
+      margin-bottom: 10px;
+    }
+
+    #mouchaer {
+      font-size: 100px;
+      color: #259eff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="myHome" class="text">我的家</div>
+    <div id="mouchaer" class="text">mouchaer</div>
+    <!-- 显示温度评分 -->
+    <div id="temperatureScore" class="score"></div>
+    <!-- 显示湿度评分 -->
+    <div id="moistureScore" class="score"></div>
+  </div>
+  <div class="chart-container">
+    <!-- 创建一个画布元素，用于绘制温度图表 -->
+    <canvas id="tempChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <!-- 创建一个画布元素，用于绘制湿度图表 -->
+    <canvas id="moistureChart"></canvas>
+  </div>
+  <script>
+    // 定义一个函数，用于从后端获取数据
+    function getData() {
+      return fetch("http://192.168.31.99:5000/api/fetch-data")
+        .then(response => response.json())
+        .then(data => {
+          // 获取最后一条数据
+          const latestData = data[data.length - 1];
+
+          // 更新温度评分显示区域
+          document.getElementById("temperatureScore").textContent = latestData[2] + "℃";
+          // 更新湿度评分显示区域
+          document.getElementById("moistureScore").textContent = latestData[3] + "%";
+
+          // 获取最后一条数据的时间戳
+          const lastTimestamp = new Date(latestData[1]).getTime();
+
+          // 计算最后一天的起始时间戳（0点）和结束时间戳（24点）
+          const startOfDay = new Date(lastTimestamp);
+          startOfDay.setHours(0, 0, 0, 0);
+          const endOfDay = new Date(startOfDay);
+          endOfDay.setHours(24, 0, 0, 0);
+
+          // 过滤出在最后一天时间范围内的数据，并且温度不超过 60 度
+          data = data.filter(row => {
+            const timestamp = new Date(row[1]).getTime();
+            const temperature = parseFloat(row[2]);
+            return timestamp >= startOfDay.getTime() && timestamp < endOfDay.getTime() && temperature <= 60;
+          });
+
+          // 将数据转换为 Chart.js 需要的格式
+          let time = [];
+          let temp = [];
+          let moisture = [];
+          for (let row of data) {
+            time.push(row[1]); // 使用时间的字符串形式
+            temp.push(parseFloat(row[2])); // 将温度转换为浮点数
+            moisture.push(parseFloat(row[3])); // 将湿度转换为浮点数
+          }
+          return {
+            time: time,
+            temp: temp,
+            moisture: moisture
+          };
+        });
+    }
+
+    // 获取画布元素的上下文
+    var tempCtx = document.getElementById("tempChart").getContext("2d");
+    var moistureCtx = document.getElementById("moistureChart").getContext("2d");
+
+    // 创建温度图表的配置对象
+    var tempOptions = {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [{
+          label: "温度",
+          data: [],
+          borderColor: "#5754fb",
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "房间温度变化"
+          }
+        }
+      }
+    };
+
+    // 创建湿度图表的配置对象
+    var moistureOptions = {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [{
+          label: "湿度",
+          data: [],
+          borderColor: "#259eff",
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "房间湿度变化"
+          }
+        }
+      }
+    };
+
+    // 使用 Chart.js 库创建图表对象
+    var tempChart = new Chart(tempCtx, tempOptions);
+    var moistureChart = new Chart(moistureCtx, moistureOptions);
+
+    // 调用 getData 函数，获取数据，并更新图表
+    getData().then(data => {
+      // 更新图表数据
+      tempChart.data.labels = data.time;
+      tempChart.data.datasets[0].data = data.temp;
+      tempChart.update();
+      moistureChart.data.labels = data.time;
+      moistureChart.data.datasets[0].data = data.moisture;
+      moistureChart.update();
+    });
+  </script>
+</body>
+</html>

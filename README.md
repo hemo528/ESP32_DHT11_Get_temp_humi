@@ -1,0 +1,2 @@
+# ESP32_DHT11_Get_temp_humi
+ESP32链接DHT11获取温湿度数据，显示在OLED屏幕上，通过中间层将数据上传到mysql数据库并且通过网页显示出来

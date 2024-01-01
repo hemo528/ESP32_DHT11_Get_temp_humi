@@ -21,3 +21,12 @@ pip install flask_cors
 pip install jsonify
 pip install logging  
 ```
+2、分别启动两个中间层（一个用来处理ESP32的请求，上传数据到数据库，另一个接受网页的请求，从数据库中读取数据，并且返回json给网页）  
+
+运行如下  
+![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/d6e3023c-9180-48b2-bc7a-1558044c3fd9)  
+
+
+![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/b10c2cdf-0ca2-4f33-81c6-2fb255986b64)  
+
+<font color=red>请一定一定确保两个中间层的端口不要冲突</font>

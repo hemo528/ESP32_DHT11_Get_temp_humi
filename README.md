@@ -29,4 +29,20 @@ pip install logging
 
 ![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/b10c2cdf-0ca2-4f33-81c6-2fb255986b64)  
 
-<font color=red>请一定一定确保两个中间层的端口不要冲突</font>
+<font color=red>请一定一定确保两个中间层的端口不要冲突</font>  
+
+## 三、网页的部署（以Ubuntu服务器为例）  
+
+1、安装基础web服务  
+
+```
+sudo apt-get update
+sudo apt-get install apache2  
+```
+
+2、上传网页到服务器的/var/www/html文件夹下，并且命名为index.html  
+
+![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/f2362433-2de1-4080-b717-bc23f768a1ab)  
+
+
+

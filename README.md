@@ -11,6 +11,10 @@ ESP32连接DHT11获取温湿度数据，显示在OLED屏幕上，通过中间层
 ![image](https://github.com/hemo528/ESP32_DHT11_Get_temp_humi/assets/40025914/640d7aed-c7e8-42fa-8a73-800ac2aab547)  
 
 ## 二、中间层部署（使用中间层去访问数据可以增加安全性）
-1、安装库文件
+1、安装库文件  
 
-
+```
+pip install request  
+pip install flask  
+pip install pymysql  
+```
